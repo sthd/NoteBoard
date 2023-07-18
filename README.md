@@ -1,7 +1,7 @@
 # NoteBoard
 This electronic note board is made of 36 panels
 
-Each panel is using **Observer** design pattern to listen to an the **state** of ColorGenerator that changes it's color every 2 seconds.
+Each panel is using **Observer** design pattern to listen to the **state** of ColorGenerator that changes it's color every 2 seconds.
 
 Used **Singleton** design pattern so that there is only a single ColorGenerator object.
 
