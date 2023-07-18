@@ -1,5 +1,6 @@
 package er;
 
+
 import java.awt.Color;
 import java.util.*;
 
@@ -9,21 +10,47 @@ import java.util.*;
  * It is responsible for generating a random color and notifying the Billboards
  */
 public class ColorGenerator extends Observable {
-    //	 Abstraction function:
-    //	 A ColorGenerator is a singleton represented by its color (currentColor).
-    //	 The color initialized to Pink.
-    //
-    //	 Representation Invariant:
-    //   The color is valid ( 0 <= r,g,b <= 255)
+    /*
+     * Abstraction function: A ColorGenerator is a singleton represented by its
+     * color (currentColor). The color initialized to Pink.
+     * this.DELAY is the delay time in milliseconds between each panel update in billbaord
+     * panelPaintOrderStrategy is the strategy the defines the order which we update each order
+     */
 
+    /*
+     * Representation Invariant:
+     * currentColor instanceof Color
+     * DELAY = 40
+     * panelPaintOrderStrategy instance of PanelPaintOrderStrategy
+     * panelPaintOrderStrategy != null
+     * there is only one instance of ColorGenerator!=null
+     */
+
+
+
+    private static ColorGenerator colorGenerator = new ColorGenerator();
     private final int DELAY = 40;
-    private Random random;
     private PanelPaintOrderStrategy panelPaintOrderStrategy;
     private Vector<Observer> observers;
-
     private Color currentColor;
 
-
+    /**
+     * @modifies this
+     * @effects Constructs a new ColorGenerator
+     */
+    public ColorGenerator() {
+        this.currentColor = Color.RED;
+        this.panelPaintOrderStrategy = new AcsendingPaintOrderStrategy();
+        this.observers = new Vector<>();
+        //checkRep();
+    }
+    /**
+     * @requires observer implements Observable's update() method
+     * @modifies this
+     * @effects method for observer design pattern. will add new observers to this which will update later in animation
+     * if observer already added then do nothing
+     * @throws NullPointerException if observer=null
+     */
     @Override
     public synchronized void addObserver(Observer observer) {
         if (observer == null)
@@ -33,6 +60,13 @@ public class ColorGenerator extends Observable {
         }
     }
 
+    /**
+     * @requires all added observers must implements Observable's update() method
+     * @modifies this
+     * @effects will call upadte() function of all the observers that had added
+     * to this through addobservers()
+     *
+     */
     @Override
     public void notifyObservers() {
         ColorGenerator copyOfThis = this;
@@ -54,47 +88,33 @@ public class ColorGenerator extends Observable {
     }
 
 
-    // Using Singleton design pattern with eager initialisation
-    private static ColorGenerator colorGenerator = new ColorGenerator();
 
+
+    /**
+     * @modifies this
+     * @effects update this panel Paint Order Strategy to paintStrategy
+     *
+     */
     public void setPanelPaintOrderStrategy(PanelPaintOrderStrategy paintStrategy ){
         this.panelPaintOrderStrategy = paintStrategy;
 
     }
 
-
     /**
-     *
-     *
      * @modifies this
-     * @effects Constructs a new ColorGenerator
+     * @effects randomaize new this.color and will update all the observers panels by the strategy
+     *
      */
-    protected ColorGenerator() {
-        this.random = new Random();
-        this.currentColor = Color.RED;
-        this.panelPaintOrderStrategy = new AcsendingPaintOrderStrategy();
-        this.observers = new Vector<>();
-        //checkRep();
-    }
     public void setRandomColor() {
-        this.currentColor = generateRandomColor();
+        this.currentColor = new Color((int)(Math.random() * 0x1000000));
         setChanged();
         notifyObservers();
     }
-
+    /**
+     * @return return this.color of the panels
+     */
     public Color getColor() {
         return this.currentColor;
-    }
-
-    /**
-     * @returns a random color.
-     */
-    public Color generateRandomColor() {
-        float r = random.nextFloat();
-        float g = random.nextFloat();
-        float b = random.nextFloat();
-        Color randomColor = new Color(r, g, b);
-        return randomColor;
     }
 
 
@@ -105,9 +125,21 @@ public class ColorGenerator extends Observable {
     public static ColorGenerator getInstance() {
         return colorGenerator;
     }
-
+    /**
+     *
+     * @return return the DELAY time between each panel update colour
+     */
     public int getDelay() {
         return this.DELAY;
+    }
+
+    private void checkRep() {
+        assert currentColor instanceof Color;
+        assert panelPaintOrderStrategy instanceof PanelPaintOrderStrategy;
+        assert panelPaintOrderStrategy !=null;
+        assert colorGenerator!=null;
+        assert 40 ==  DELAY;
+
     }
 
 }

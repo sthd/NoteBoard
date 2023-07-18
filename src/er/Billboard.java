@@ -14,24 +14,12 @@ public class Billboard extends JFrame {
 
 
     /*
-     * Abstract Function:
-     *
-     *
-     *
+     * The main application class for billboard excersie
+     * Will choose randomly one of 4 strategies and painting the panels in 6x6 billboard
+     * Every 2 seconds will switch color
      *
      */
 
-    /*
-     * Rep invariant:
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     */
 
 
     private static final int PANELS_IN_COLUMNS = 6;
@@ -48,6 +36,11 @@ public class Billboard extends JFrame {
     Panel panels[] = new Panel[BOARDSIZE];
     ColorGenerator colorGenerator = ColorGenerator.getInstance();
 
+
+    /**
+     * @modifies this
+     * @effects will run billaboard animation with random 1 of 4 strategies of paint order and random color
+     */
     public Billboard() {
         super("Billboard");
         setSize(WINDOW_WIDTH,WINDOW_HEIGHT);

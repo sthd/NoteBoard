@@ -1,45 +1,58 @@
 package er;
 
+
+import java.util.*;
+import java.util.stream.*;
+/**
+ * A Strategy that update the BillaBoard by random order for ColorGenerator strategy design pattern
+ *
+ */
 public class RandomPaintOrderStrategy implements PanelPaintOrderStrategy{
 
     /*
-     * Abstract Function:
-     *
-     *
-     *
-     *
-     *
+     * Abstraction function
+     * RandomPaintOrderStrategy is
+     * this is part of Strategy ColorGenerate design pattern
+     * which will random element of the billaboard
+     * randomIntArray is the the order of
+     * all the indexes of the billboard in shuffeled order
+     * and detemines the random order of the next element
+     * it the location in randomIntarray
      */
 
     /*
      * Rep invariant:
-     *
-     *
-     *
-     *
-     *
-     *
-     *
-     *
+     * randomIntsArray Size is 36, each element is unique (no duplicates)
+     * and it>=0 and it <36
+     * randomIntsArray includes only ints
      *
      */
-    private final int BOARDSIZE = 36;
-    private int nextPanel;
+    private List<Integer> randomIntsArray = IntStream.range(0, 36).boxed().collect(Collectors.toList());;
+    int it=0;
 
     /**
-     *
      * @modifies this
-     * @effects
-     *
+     * @effects will return the next random index
      */
     @Override
     public int getNextPanel() {
-        int currentPanel = nextPanel;
-        // update next panel algorithm
-        //checkRep();
-        return currentPanel;
+        checkRep();
+        if(0 == it) {
+//			randomIntsArray =  IntStream.range(0, 36).boxed().collect(Collectors.toList());
+            Collections.shuffle(randomIntsArray);
+        }
+
+        int next =  randomIntsArray.get(it);
+        it = (it+1)%(randomIntsArray.size());
+        checkRep();
+        return next;
     }
 
+    private void checkRep() {
+        Set<Integer> set = new HashSet<>(randomIntsArray);
+        assert set.size()==36;
+        assert it>=0 && it<36;
+    }
 }
 
 
