@@ -70,13 +70,13 @@ public class Billboard extends JFrame {
                             colorGenerator.setPanelPaintOrderStrategy(new AcsendingPaintOrderStrategy());
                             break;
                         case 1:
-                            colorGenerator.setPanelPaintOrderStrategy(new AcsendingPaintOrderStrategy());
+                            colorGenerator.setPanelPaintOrderStrategy(new ColumnsPaintOrderStrategy());
                             break;
                         case 2:
-                            colorGenerator.setPanelPaintOrderStrategy(new AcsendingPaintOrderStrategy());
+                            colorGenerator.setPanelPaintOrderStrategy(new RandomPaintOrderStrategy());
                             break;
                         case 3:
-                            colorGenerator.setPanelPaintOrderStrategy(new AcsendingPaintOrderStrategy());
+                            colorGenerator.setPanelPaintOrderStrategy(new TwoRoundsPaintOrderStrategy());
                             break;
                         default:
                             break;
